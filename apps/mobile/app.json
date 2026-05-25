@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "MateCoach MN",
+    "slug": "matecoach-mn",
+    "scheme": "matecoach",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "platforms": ["ios", "android"],
+    "assetBundlePatterns": ["**/*"]
+  }
+}

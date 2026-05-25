@@ -1,0 +1,10 @@
+{
+  "name": "mobile",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"Expo phase is scaffolded. Install Expo SDK dependencies when Phase 2 starts.\"",
+    "build": "echo \"Mobile build is deferred to Phase 2.\""
+  }
+}
