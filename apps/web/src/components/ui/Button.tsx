@@ -13,11 +13,13 @@ const variants = {
   danger: "bg-danger text-white hover:bg-[#fa7468]"
 };
 
-export function Button({ className, icon, children, variant = "primary", ...props }: ButtonProps) {
+export function Button({ className, icon, children, variant = "primary", type = "button", ...props }: ButtonProps) {
   return (
     <button
+      type={type}
       className={cn(
-        "inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
+        children ? "px-4" : "w-10 px-0",
         variants[variant],
         className
       )}

@@ -13,6 +13,7 @@
     "dev:web": "npm run dev -w apps/web",
     "dev:api": "npm run dev -w backend",
     "build": "npm run build -w @mda-chess/shared && npm run build -w @mda-chess/ui && npm run build -w @mda-chess/chess-engine && npm run build -w @mda-chess/api-client && npm run build -w backend && npm run build -w apps/web && npm run build -w apps/mobile",
+    "build:web": "npm run build -w @mda-chess/shared && npm run build -w @mda-chess/ui && npm run build -w @mda-chess/chess-engine && npm run build -w @mda-chess/api-client && npm run build -w apps/web",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "prisma:generate": "npm run prisma:generate -w backend",
     "lint": "npm run lint --workspaces --if-present"

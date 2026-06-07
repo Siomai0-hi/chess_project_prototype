@@ -6,19 +6,20 @@ export default {
     extend: {
       colors: {
         board: {
-          light: "#d7b98e",
-          dark: "#6d4b35"
+          light: "#f0d9b5",
+          dark: "#b58863"
         },
-        ink: "#f5f2eb",
-        night: "#101211",
-        panel: "#181b19",
-        line: "#2a302c",
-        accent: "#55c878",
-        danger: "#f06457",
-        warning: "#f4b84a"
+        ink: "#ffffff",
+        night: "#1a1a1a",
+        panel: "#242424",
+        line: "#343434",
+        accent: "#5b8a32",
+        danger: "#c0392b",
+        warning: "#d4a017",
+        muted: "#a0a0a0"
       },
       boxShadow: {
-        glow: "0 20px 80px rgba(85, 200, 120, 0.16)"
+        glow: "0 10px 30px rgba(91, 138, 50, 0.18)"
       }
     }
   },

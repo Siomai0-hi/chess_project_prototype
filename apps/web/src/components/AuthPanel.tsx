@@ -15,7 +15,7 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("demo@matecoach.mn");
   const [password, setPassword] = useState("password123");
-  const [name, setName] = useState("Mongolian Player");
+  const [name, setName] = useState("Шатарчин");
   const setAuth = useSessionStore((state) => state.setAuth);
 
   const mutation = useMutation({
@@ -90,7 +90,7 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
           />
         </label>
 
-        {mutation.error ? <p className="text-sm text-danger">{mutation.error.message}</p> : null}
+        {mutation.error ? <p className="text-sm text-danger">Нэвтрэх мэдээллээ шалгаад дахин оролдоно уу.</p> : null}
 
         <Button
           className="w-full"
