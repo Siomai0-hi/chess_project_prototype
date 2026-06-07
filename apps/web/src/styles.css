@@ -2,15 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Google Fonts fallback (preloaded in index.html) ─── */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
 :root {
   color-scheme: dark;
-  font-family:
-    "Noto Sans", "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #1a1a1a;
+  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #141614;
+
+  /* Brand gradient tokens */
+  --accent: #5b8a32;
+  --accent-light: #72b040;
+  --night: #141614;
+  --panel: #1e211e;
+  --panel-border: rgba(255, 255, 255, 0.07);
+  --glow-accent: rgba(91, 138, 50, 0.25);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -18,12 +35,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
   color: #ffffff;
-  background: #1a1a1a;
+  background: #141614;
+  /* Subtle ambient glow at the top */
+  background-image: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(91, 138, 50, 0.08) 0%, transparent 60%);
+  background-attachment: fixed;
 }
 
+/* ─── Form elements inherit font ─── */
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -31,29 +53,78 @@ textarea {
   resize: vertical;
 }
 
+/* ─── Focus visible ring ─── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ─── Text selection ─── */
 ::selection {
-  background: rgba(91, 138, 50, 0.42);
+  background: rgba(91, 138, 50, 0.38);
+  color: #fff;
 }
 
+/* ─── Chess board piece drop shadow ─── */
 .analysis-board-shell img {
-  filter: drop-shadow(0 7px 7px rgba(0, 0, 0, 0.22));
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
 }
 
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #242424;
+  background: #1a1e1a;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #454545;
-  border: 2px solid #242424;
+  background: linear-gradient(180deg, #3a4a3a, #2e3a2e);
+  border: 2px solid #1a1e1a;
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #575757;
+  background: linear-gradient(180deg, #4a5e4a, #3e4e3e);
+}
+
+::-webkit-scrollbar-corner {
+  background: #1a1e1a;
+}
+
+/* ─── Shimmer skeleton utility ─── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
+}
+
+/* ─── Glass card utility ─── */
+.glass {
+  background: rgba(30, 33, 30, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* ─── Gradient text utility ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #72b040 0%, #a8e063 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Smooth number transitions ─── */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }

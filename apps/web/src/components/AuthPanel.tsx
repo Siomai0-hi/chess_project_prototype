@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { LogIn, ShieldCheck, UserPlus } from "lucide-react";
+import { Eye, EyeOff, LogIn, ShieldCheck, UserPlus } from "lucide-react";
 import { cn } from "@mda-chess/ui";
 import { apiClient } from "../api/client";
 import { useSessionStore } from "../store/session";
@@ -13,9 +13,10 @@ interface AuthPanelProps {
 
 export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
   const [mode, setMode] = useState<"login" | "register">("login");
-  const [email, setEmail] = useState("demo@matecoach.mn");
-  const [password, setPassword] = useState("password123");
-  const [name, setName] = useState("Шатарчин");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const setAuth = useSessionStore((state) => state.setAuth);
 
   const mutation = useMutation({
@@ -29,30 +30,48 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
     }
   });
 
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !password.trim()) return;
+    mutation.mutate();
+  }
+
   return (
-    <section className={cn("rounded-lg border border-white/10 bg-panel p-4 shadow-2xl", className)}>
-      <div className="mb-4 flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-lg bg-accent/[0.14] text-accent">
-          <ShieldCheck size={18} aria-hidden="true" />
+    <section className={cn("rounded-xl border border-white/[0.07] bg-panel p-5 shadow-panel", className)}>
+      {/* Header */}
+      <div className="mb-5 flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-accent shadow-glow-sm">
+          <ShieldCheck size={18} className="text-night" aria-hidden="true" />
         </div>
         <div className="min-w-0">
-          <h2 className="truncate text-base font-bold text-ink">Бүртгэл</h2>
-          <p className="truncate text-xs text-white/50">Ахиц, тоглолт, алдаагаа хадгална</p>
+          <h2 className="truncate text-base font-bold text-white">
+            {mode === "login" ? "Нэвтрэх" : "Бүртгүүлэх"}
+          </h2>
+          <p className="truncate text-xs text-white/40">
+            Ахиц, тоглолт, алдаагаа хадгалах
+          </p>
         </div>
       </div>
 
-      <div className="flex rounded-lg bg-white/[0.055] p-1">
+      {/* Mode tabs */}
+      <div className="mb-4 flex rounded-lg bg-black/20 p-1">
         <button
-          className={`h-9 flex-1 rounded-md text-sm font-semibold transition ${
-            mode === "login" ? "bg-accent text-night" : "text-white/60"
+          type="button"
+          className={`h-9 flex-1 rounded-md text-sm font-semibold transition-all duration-200 ${
+            mode === "login"
+              ? "bg-gradient-accent text-night shadow-glow-sm"
+              : "text-white/45 hover:text-white/70"
           }`}
           onClick={() => setMode("login")}
         >
           Нэвтрэх
         </button>
         <button
-          className={`h-9 flex-1 rounded-md text-sm font-semibold transition ${
-            mode === "register" ? "bg-accent text-night" : "text-white/60"
+          type="button"
+          className={`h-9 flex-1 rounded-md text-sm font-semibold transition-all duration-200 ${
+            mode === "register"
+              ? "bg-gradient-accent text-night shadow-glow-sm"
+              : "text-white/45 hover:text-white/70"
           }`}
           onClick={() => setMode("register")}
         >
@@ -60,47 +79,73 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
         </button>
       </div>
 
-      <div className="mt-4 space-y-3">
+      {/* Form */}
+      <form className="space-y-3" onSubmit={handleSubmit} noValidate>
         {mode === "register" ? (
-          <label className="block text-sm text-white/70">
-            Нэр
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold text-white/50">Нэр</span>
             <input
-              className="mt-1 h-11 w-full rounded-lg border border-white/10 bg-night px-3 text-ink outline-none focus:border-accent"
+              className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.15)] transition-all"
+              placeholder="Таны нэр"
               value={name}
-              onChange={(event) => setName(event.target.value)}
+              onChange={(e) => setName(e.target.value)}
+              autoComplete="name"
             />
           </label>
         ) : null}
-        <label className="block text-sm text-white/70">
-          Имэйл
+
+        <label className="block">
+          <span className="mb-1 block text-xs font-semibold text-white/50">Имэйл</span>
           <input
-            className="mt-1 h-11 w-full rounded-lg border border-white/10 bg-night px-3 text-ink outline-none focus:border-accent"
+            className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.15)] transition-all"
             type="email"
+            placeholder="name@example.com"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </label>
-        <label className="block text-sm text-white/70">
-          Нууц үг
-          <input
-            className="mt-1 h-11 w-full rounded-lg border border-white/10 bg-night px-3 text-ink outline-none focus:border-accent"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            required
           />
         </label>
 
-        {mutation.error ? <p className="text-sm text-danger">Нэвтрэх мэдээллээ шалгаад дахин оролдоно уу.</p> : null}
+        <label className="block">
+          <span className="mb-1 block text-xs font-semibold text-white/50">Нууц үг</span>
+          <div className="relative">
+            <input
+              className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 pr-10 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.15)] transition-all"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/35 transition hover:text-white/70"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Нуух" : "Харуулах"}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+        </label>
+
+        {mutation.error ? (
+          <p className="rounded-lg border border-danger/25 bg-danger/10 px-3 py-2 text-sm text-danger-light">
+            Мэдээллээ шалгаад дахин оролдоно уу.
+          </p>
+        ) : null}
 
         <Button
+          type="submit"
           className="w-full"
           icon={mode === "login" ? <LogIn size={16} /> : <UserPlus size={16} />}
-          disabled={mutation.isPending}
-          onClick={() => mutation.mutate()}
+          loading={mutation.isPending}
+          disabled={!email.trim() || !password.trim()}
         >
-          {mutation.isPending ? "Уншиж байна" : mode === "login" ? "Нэвтрэх" : "Бүртгүүлэх"}
+          {mode === "login" ? "Нэвтрэх" : "Бүртгүүлэх"}
         </Button>
-      </div>
+      </form>
     </section>
   );
 }
