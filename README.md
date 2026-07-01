@@ -145,4 +145,4 @@ Core web components:
 
 ## Environment
 
-The default OpenAI model can be changed with `OPENAI_MODEL`. If `OPENAI_API_KEY` is missing, the coach returns a deterministic Mongolian fallback so the MVP remains usable.
+The default AI model can be changed with `OPENAI_MODEL`. Set `OPENAI_BASE_URL` for OpenAI-compatible providers such as Groq. If `OPENAI_API_KEY` is missing, the coach returns a deterministic Mongolian fallback so the MVP remains usable.

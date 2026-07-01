@@ -14,7 +14,10 @@ export async function explainMove(input: {
     return fallbackExplanation(input.move, input.language);
   }
 
-  openai ??= new OpenAI({ apiKey: env.OPENAI_API_KEY });
+  openai ??= new OpenAI({
+    apiKey: env.OPENAI_API_KEY,
+    ...(env.OPENAI_BASE_URL ? { baseURL: env.OPENAI_BASE_URL } : {})
+  });
 
   // Retry once on transient OpenAI failures
   for (let attempt = 0; attempt < 2; attempt++) {
