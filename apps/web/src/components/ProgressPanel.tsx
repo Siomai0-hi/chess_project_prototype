@@ -15,12 +15,12 @@ export function ProgressPanel({ summary, loading }: ProgressPanelProps) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="rounded-xl border border-white/[0.07] bg-panel shadow-panel"
+      className="rounded-lg border border-white/[0.08] bg-[#171411]/88 shadow-panel"
       aria-label="Ахиц дэвшил"
     >
-      <div className="flex h-12 items-center gap-2 border-b border-white/[0.07] px-3">
-        <TrendingUp size={15} className="text-accent" />
-        <h2 className="text-sm font-bold text-white">Ахиц дэвшил</h2>
+      <div className="flex h-12 items-center gap-2 border-b border-white/[0.08] px-3">
+        <TrendingUp size={15} className="text-teal" />
+        <h2 className="text-sm font-black text-ink">Ахиц дэвшил</h2>
       </div>
 
       <div className="p-3 space-y-3">
@@ -36,7 +36,7 @@ function ProgressContent({ summary }: { summary: UserProgressSummary }) {
       {/* Stats row */}
       <div className="grid grid-cols-2 gap-2">
         <StatCard
-          icon={<BarChart2 size={14} className="text-accent" />}
+          icon={<BarChart2 size={14} className="text-teal" />}
           label="Тоглолт"
           value={String(summary.gamesReviewed)}
         />
@@ -48,7 +48,7 @@ function ProgressContent({ summary }: { summary: UserProgressSummary }) {
       </div>
 
       {/* Accuracy */}
-      <div className="rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-2.5">
+      <div className="rounded-lg border border-white/[0.08] bg-white/[0.045] px-3 py-2.5">
         <div className="mb-2 flex items-center justify-between">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-white/35">Дундаж нарийвчлал</p>
           <AccuracyBadge accuracy={summary.averageAccuracy} size="sm" />
@@ -67,7 +67,7 @@ function ProgressContent({ summary }: { summary: UserProgressSummary }) {
             {summary.nextTrainingFocus.map((focus) => (
               <span
                 key={focus}
-                className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-0.5 text-[11px] font-semibold text-accent-light"
+                className="rounded-full border border-teal/25 bg-teal/[0.08] px-2.5 py-0.5 text-[11px] font-semibold text-teal"
               >
                 {focus}
               </span>
@@ -113,12 +113,12 @@ function AccuracyBar({ accuracy }: { accuracy: number }) {
   }, [accuracy]);
 
   const color =
-    accuracy >= 80 ? "from-accent to-accent-light" :
+    accuracy >= 80 ? "from-teal to-accent-light" :
     accuracy >= 65 ? "from-warning to-warning-light" :
     "from-danger to-danger-light";
 
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.07]">
+    <div className="h-2 w-full overflow-hidden rounded-full bg-black/30">
       <div
         ref={barRef}
         className={`h-full rounded-full bg-gradient-to-r ${color} transition-all duration-700 ease-out`}
@@ -130,7 +130,7 @@ function AccuracyBar({ accuracy }: { accuracy: number }) {
 
 function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-2">
+    <div className="rounded-lg border border-white/[0.08] bg-white/[0.045] px-3 py-2">
       <div className="mb-1 flex items-center gap-1.5">{icon}<p className="text-[10px] font-semibold uppercase tracking-wide text-white/35">{label}</p></div>
       <p className="text-sm font-bold text-white tabular">{value}</p>
     </div>

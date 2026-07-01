@@ -18,6 +18,7 @@
     "@mda-chess/shared": "0.1.0",
     "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.2",
+    "chess.js": "^1.1.0",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

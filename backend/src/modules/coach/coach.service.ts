@@ -19,22 +19,24 @@ export async function explainMove(input: {
   // Retry once on transient OpenAI failures
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const response = await openai.chat.completions.create({
-        model: env.OPENAI_MODEL,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "system",
-            content: buildCoachSystemPrompt(input.language)
-          },
-          {
-            role: "user",
-            content: `${buildCoachUserPrompt(input.move)}\nUser level: ${input.userLevel}`
-          }
-        ],
-        temperature: 0.35,
-        timeout: 12000
-      });
+      const response = await openai.chat.completions.create(
+        {
+          model: env.OPENAI_MODEL,
+          response_format: { type: "json_object" },
+          messages: [
+            {
+              role: "system",
+              content: buildCoachSystemPrompt(input.language)
+            },
+            {
+              role: "user",
+              content: `${buildCoachUserPrompt(input.move)}\nUser level: ${input.userLevel}`
+            }
+          ],
+          temperature: 0.35
+        },
+        { timeout: 12000 }
+      );
 
       const content = response.choices[0]?.message.content;
       if (!content) continue;

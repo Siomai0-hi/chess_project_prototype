@@ -10,15 +10,15 @@
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #141614;
+  background: #12110f;
 
-  /* Brand gradient tokens */
-  --accent: #5b8a32;
-  --accent-light: #72b040;
-  --night: #141614;
-  --panel: #1e211e;
-  --panel-border: rgba(255, 255, 255, 0.07);
-  --glow-accent: rgba(91, 138, 50, 0.25);
+  --accent: #d7b56d;
+  --accent-light: #f2d98d;
+  --teal: #65c8bd;
+  --night: #12110f;
+  --panel: #1d1a16;
+  --panel-border: rgba(247, 243, 234, 0.09);
+  --glow-accent: rgba(215, 181, 109, 0.2);
 }
 
 * {
@@ -33,10 +33,12 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  color: #ffffff;
-  background: #141614;
-  /* Subtle ambient glow at the top */
-  background-image: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(91, 138, 50, 0.08) 0%, transparent 60%);
+  color: #f7f3ea;
+  background: #12110f;
+  background-image:
+    linear-gradient(135deg, rgba(215, 181, 109, 0.07), transparent 32%, rgba(101, 200, 189, 0.055) 74%, transparent),
+    repeating-linear-gradient(90deg, rgba(247, 243, 234, 0.026) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(0deg, rgba(247, 243, 234, 0.018) 0 1px, transparent 1px 48px);
   background-attachment: fixed;
 }
 
@@ -61,13 +63,30 @@ textarea {
 
 /* ─── Text selection ─── */
 ::selection {
-  background: rgba(91, 138, 50, 0.38);
-  color: #fff;
+  background: rgba(215, 181, 109, 0.42);
+  color: #12110f;
 }
 
 /* ─── Chess board piece drop shadow ─── */
+.analysis-board-shell {
+  background:
+    linear-gradient(145deg, rgba(247, 243, 234, 0.12), transparent 24%),
+    linear-gradient(315deg, rgba(101, 200, 189, 0.12), transparent 30%),
+    #171411;
+}
+
+.analysis-board-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0.55rem;
+  pointer-events: none;
+  border: 1px solid rgba(18, 17, 15, 0.28);
+  border-radius: 8px;
+  z-index: 1;
+}
+
 .analysis-board-shell img {
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
+  filter: drop-shadow(0 7px 9px rgba(0, 0, 0, 0.34));
 }
 
 /* ─── Scrollbar ─── */
@@ -77,22 +96,22 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1e1a;
+  background: #181511;
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3a4a3a, #2e3a2e);
-  border: 2px solid #1a1e1a;
+  background: linear-gradient(180deg, #6d5c38, #2c5f5a);
+  border: 2px solid #181511;
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #4a5e4a, #3e4e3e);
+  background: linear-gradient(180deg, #8a7449, #3c776f);
 }
 
 ::-webkit-scrollbar-corner {
-  background: #1a1e1a;
+  background: #181511;
 }
 
 /* ─── Shimmer skeleton utility ─── */
@@ -109,15 +128,15 @@ textarea {
 
 /* ─── Glass card utility ─── */
 .glass {
-  background: rgba(30, 33, 30, 0.75);
+  background: rgba(29, 26, 22, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--panel-border);
 }
 
 /* ─── Gradient text utility ─── */
 .gradient-text {
-  background: linear-gradient(135deg, #72b040 0%, #a8e063 100%);
+  background: linear-gradient(135deg, #f2d98d 0%, #65c8bd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

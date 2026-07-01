@@ -1,8 +1,9 @@
 import compression from "compression";
 import cors from "cors";
-import express from "express";
+import express, { type RequestHandler } from "express";
 import helmet from "helmet";
 import { env } from "./config/env";
+import { requestContext } from "./middleware/requestContext";
 import { analysisRoutes } from "./modules/analysis/analysis.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { coachRoutes } from "./modules/coach/coach.routes";
@@ -14,8 +15,10 @@ import { errorMiddleware } from "./middleware/error";
 export function createApp() {
   const app = express();
 
+  app.disable("x-powered-by");
+  app.use(requestContext);
   app.use(helmet());
-  app.use(compression());
+  app.use(compression() as unknown as RequestHandler);
   app.use(
     cors({
       origin: env.CORS_ORIGIN,
@@ -24,8 +27,13 @@ export function createApp() {
   );
   app.use(express.json({ limit: "2mb" }));
 
-  app.get("/health", (_req, res) => {
-    res.json({ ok: true, service: "mongolian-chess-api" });
+  app.get("/health", (req, res) => {
+    res.json({
+      ok: true,
+      service: "mongolian-chess-api",
+      uptime: process.uptime(),
+      requestId: req.id
+    });
   });
 
   app.use("/auth", authRoutes);

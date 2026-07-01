@@ -3,6 +3,7 @@ import type { MoveAnalysis } from "@mda-chess/shared";
 import { cn } from "@mda-chess/ui";
 import { AccuracyBadge } from "./AccuracyBadge";
 import { accuracyFromLosses } from "@mda-chess/shared";
+import { AlertTriangle, BookOpenCheck, NotebookTabs } from "lucide-react";
 
 interface GameReviewPanelProps {
   moves: MoveAnalysis[];
@@ -34,10 +35,15 @@ export function GameReviewPanel({ moves, selectedMove, onSelectMove, loading }: 
   const bAcc = moves.length ? accuracyFromLosses(blackLosses) : undefined;
 
   return (
-    <section className="flex min-h-[18rem] min-w-0 flex-col rounded-xl border border-white/[0.07] bg-panel shadow-panel">
-      {/* Header */}
-      <div className="flex h-12 items-center justify-between gap-2 border-b border-white/[0.07] px-3">
-        <h2 className="text-sm font-bold text-white">Нүүдлийн жагсаалт</h2>
+    <section className="flex min-h-[18rem] min-w-0 flex-col rounded-lg border border-white/[0.08] bg-[#171411]/88 shadow-panel">
+      <div className="flex h-12 items-center justify-between gap-2 border-b border-white/[0.08] px-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <NotebookTabs size={15} className="text-accent-light" aria-hidden="true" />
+          <div className="min-w-0">
+            <h2 className="truncate text-sm font-black text-ink">Нүүдлийн хуудас</h2>
+            <p className="text-[10px] font-bold uppercase tracking-[0.20em] text-white/35">{moves.length ? `${moves.length} нүүдэл` : "PGN"}</p>
+          </div>
+        </div>
         <div className="flex items-center gap-1.5">
           {wAcc !== undefined ? <AccuracyBadge accuracy={wAcc} size="sm" /> : null}
           {bAcc !== undefined ? <AccuracyBadge accuracy={bAcc} size="sm" /> : null}
@@ -49,13 +55,20 @@ export function GameReviewPanel({ moves, selectedMove, onSelectMove, loading }: 
         </div>
       </div>
 
-      {/* Move list */}
+      <div className="grid grid-cols-[2.4rem_minmax(0,1fr)_minmax(0,1fr)] border-b border-white/[0.06] bg-black/[0.14] px-0 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
+        <div className="py-2 text-center">#</div>
+        <div className="border-l border-white/[0.05] px-2.5 py-2">Цагаан</div>
+        <div className="border-l border-white/[0.05] px-2.5 py-2">Хар</div>
+      </div>
+
       <div className="min-h-0 flex-1 overflow-auto">
         {loading ? <MoveListSkeleton /> : null}
         {!loading && moves.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-white/[0.04] text-2xl">♟</div>
-            <p className="text-sm text-white/35">PGN оруулаад шинжилгээ эхлүүлнэ үү</p>
+          <div className="flex flex-col items-center justify-center gap-2 px-4 py-12 text-center">
+            <div className="grid h-12 w-12 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.045] text-accent-light">
+              <BookOpenCheck size={19} aria-hidden="true" />
+            </div>
+            <p className="text-sm font-semibold text-white/[0.38]">PGN хүлээж байна</p>
           </div>
         ) : null}
         <div className="grid text-sm">
@@ -71,7 +84,7 @@ export function GameReviewPanel({ moves, selectedMove, onSelectMove, loading }: 
                   : null
               }
             >
-              <div className="flex items-center justify-center bg-black/10 text-[11px] font-bold text-white/25">
+              <div className="flex items-center justify-center bg-black/[0.16] text-[11px] font-black tabular text-white/[0.28]">
                 {pair.moveNumber}
               </div>
               <MoveCell
@@ -104,14 +117,15 @@ function MoveCell({
   if (!move) return <div className="min-h-10 border-l border-white/[0.04]" />;
 
   const leftBorderColor = classificationBorderColor(move.classification);
+  const isCritical = move.classification === "mistake" || move.classification === "blunder";
 
   return (
     <button
       className={cn(
-        "relative flex min-h-10 min-w-0 items-center justify-between gap-2 border-l border-white/[0.04] px-2.5 text-left transition-all duration-150",
+        "relative flex min-h-10 min-w-0 items-center justify-between gap-2 border-l border-white/[0.045] px-2.5 text-left transition-all duration-150",
         selected
-          ? "bg-accent/[0.14] text-white"
-          : "text-white/65 hover:bg-white/[0.05] hover:text-white/90"
+          ? "bg-accent/[0.13] text-ink shadow-[inset_0_0_0_1px_rgba(215,181,109,0.20)]"
+          : "text-white/[0.66] hover:bg-white/[0.055] hover:text-white/[0.92]"
       )}
       onClick={() => onSelectMove(move)}
       title={`${move.moveNumber}. ${move.san} — ${classificationLabel(move.classification)}`}
@@ -122,9 +136,13 @@ function MoveCell({
       <span
         className={cn("absolute left-0 top-0 h-full w-0.5 transition-opacity", leftBorderColor, selected ? "opacity-100" : "opacity-40")}
       />
-      <span className="min-w-0 truncate font-semibold">{move.san}</span>
-      <span className={classificationClass(move.classification)} aria-hidden="true">
-        {classificationSymbol(move.classification)}
+      <span className="min-w-0 truncate font-bold">{move.san}</span>
+      <span className="flex shrink-0 items-center gap-1">
+        {isCritical ? <AlertTriangle size={12} className="text-danger-light" aria-hidden="true" /> : null}
+        <span className="hidden text-[10px] font-semibold tabular text-white/[0.32] sm:inline">{move.centipawnLoss}cp</span>
+        <span className={classificationClass(move.classification)} aria-hidden="true">
+          {classificationSymbol(move.classification)}
+        </span>
       </span>
     </button>
   );
@@ -182,14 +200,15 @@ function classificationBorderColor(classification: MoveAnalysis["classification"
   if (classification === "mistake") return "bg-danger/70";
   if (classification === "inaccuracy") return "bg-warning";
   if (classification === "book") return "bg-white/20";
+  if (classification === "best" || classification === "excellent") return "bg-teal";
   return "bg-accent";
 }
 
 function classificationClass(classification: MoveAnalysis["classification"]) {
-  const base = "grid h-5 min-w-5 place-items-center rounded-md text-[10px] font-black leading-none";
-  if (classification === "blunder") return `${base} bg-danger/20 text-[#ff9a91]`;
-  if (classification === "mistake") return `${base} bg-danger/15 text-[#ffb0aa]`;
+  const base = "grid h-5 min-w-5 place-items-center rounded-md border text-[10px] font-black leading-none";
+  if (classification === "blunder") return `${base} border-danger/25 bg-danger/20 text-[#ff9a91]`;
+  if (classification === "mistake") return `${base} border-danger/20 bg-danger/15 text-[#ffb0aa]`;
   if (classification === "inaccuracy") return `${base} bg-warning/[0.18] text-[#f4cf74]`;
-  if (classification === "book") return `${base} bg-white/10 text-white/40`;
-  return `${base} bg-accent/[0.18] text-[#99c76a]`;
+  if (classification === "book") return `${base} border-white/10 bg-white/10 text-white/40`;
+  return `${base} border-teal/25 bg-teal/[0.14] text-teal`;
 }

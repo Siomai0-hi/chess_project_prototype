@@ -36,7 +36,7 @@ export function AnalysisBoard({ fen, activeMove, orientation, onFenChange }: Ana
   const customArrows = useMemo<Arrow[]>(
     () =>
       activeSquares.from && activeSquares.to
-        ? [[activeSquares.from, activeSquares.to, "rgba(91, 160, 64, 0.7)"]]
+        ? [[activeSquares.from, activeSquares.to, "rgba(215, 181, 109, 0.82)"]]
         : [],
     [activeSquares.from, activeSquares.to]
   );
@@ -113,7 +113,7 @@ export function AnalysisBoard({ fen, activeMove, orientation, onFenChange }: Ana
     <>
       <div
         ref={boardRef}
-        className="analysis-board-shell aspect-square w-full overflow-hidden rounded-xl border border-black/50 shadow-[0_8px_32px_rgba(0,0,0,0.7)]"
+        className="analysis-board-shell relative aspect-square w-full overflow-hidden rounded-lg border border-black/60 p-2 shadow-[0_18px_54px_rgba(0,0,0,0.56)]"
       >
         <Chessboard
           id="analysis-board"
@@ -124,16 +124,16 @@ export function AnalysisBoard({ fen, activeMove, orientation, onFenChange }: Ana
           boardWidth={boardWidth}
           animationDuration={160}
           customArrows={customArrows}
-          customArrowColor="rgba(91,160,64,0.72)"
+          customArrowColor="rgba(215,181,109,0.78)"
           customBoardStyle={{
             width: "100%",
             height: "100%",
-            borderRadius: "12px",
-            boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.3)"
+            borderRadius: "8px",
+            boxShadow: "inset 0 0 0 1px rgba(18,17,15,0.34)"
           }}
-          customDarkSquareStyle={{ backgroundColor: "#b58863" }}
-          customLightSquareStyle={{ backgroundColor: "#f0d9b5" }}
-          customDropSquareStyle={{ boxShadow: "inset 0 0 0 4px rgba(91, 138, 50, 0.65)" }}
+          customDarkSquareStyle={{ backgroundColor: "#54736f" }}
+          customLightSquareStyle={{ backgroundColor: "#d9c89c" }}
+          customDropSquareStyle={{ boxShadow: "inset 0 0 0 4px rgba(101, 200, 189, 0.65)" }}
           customNotationStyle={{
             color: "rgba(20,20,20,0.52)",
             fontSize: Math.max(10, Math.floor(boardWidth / 58)),
@@ -180,22 +180,22 @@ function buildSquareStyles(
 ): CustomSquareStyles {
   const styles: CustomSquareStyles = {};
   const base = {
-    boxShadow: "inset 0 0 0 3px rgba(91, 138, 50, 0.38)",
-    background: "rgba(155, 199, 0, 0.24)"
+    boxShadow: "inset 0 0 0 3px rgba(101, 200, 189, 0.42)",
+    background: "rgba(101, 200, 189, 0.22)"
   };
 
   if (from) styles[from] = base;
   if (to) {
     styles[to] = {
       ...base,
-      boxShadow: "inset 0 0 0 3px rgba(212, 160, 23, 0.48)",
-      background: "rgba(212, 160, 23, 0.28)"
+      boxShadow: "inset 0 0 0 3px rgba(215, 181, 109, 0.58)",
+      background: "rgba(215, 181, 109, 0.30)"
     };
   }
   if (selectedSquare) {
     styles[selectedSquare] = {
       ...styles[selectedSquare],
-      boxShadow: "inset 0 0 0 4px rgba(52, 152, 219, 0.58)"
+      boxShadow: "inset 0 0 0 4px rgba(184, 70, 83, 0.58)"
     };
   }
   for (const square of legalSquares) {

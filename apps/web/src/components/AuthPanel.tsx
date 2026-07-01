@@ -37,14 +37,13 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
   }
 
   return (
-    <section className={cn("rounded-xl border border-white/[0.07] bg-panel p-5 shadow-panel", className)}>
-      {/* Header */}
+    <section className={cn("rounded-lg border border-white/[0.08] bg-[#171411] p-5 shadow-panel", className)}>
       <div className="mb-5 flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-accent shadow-glow-sm">
+        <div className="grid h-10 w-10 place-items-center rounded-lg border border-accent/25 bg-gradient-accent shadow-glow-sm">
           <ShieldCheck size={18} className="text-night" aria-hidden="true" />
         </div>
         <div className="min-w-0">
-          <h2 className="truncate text-base font-bold text-white">
+          <h2 className="truncate text-base font-black text-ink">
             {mode === "login" ? "Нэвтрэх" : "Бүртгүүлэх"}
           </h2>
           <p className="truncate text-xs text-white/40">
@@ -53,7 +52,6 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
         </div>
       </div>
 
-      {/* Mode tabs */}
       <div className="mb-4 flex rounded-lg bg-black/20 p-1">
         <button
           type="button"
@@ -79,13 +77,12 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
         </button>
       </div>
 
-      {/* Form */}
       <form className="space-y-3" onSubmit={handleSubmit} noValidate>
         {mode === "register" ? (
           <label className="block">
             <span className="mb-1 block text-xs font-semibold text-white/50">Нэр</span>
             <input
-              className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.15)] transition-all"
+              className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(215,181,109,0.14)] transition-all"
               placeholder="Таны нэр"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -97,7 +94,7 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
         <label className="block">
           <span className="mb-1 block text-xs font-semibold text-white/50">Имэйл</span>
           <input
-            className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.15)] transition-all"
+            className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(215,181,109,0.14)] transition-all"
             type="email"
             placeholder="name@example.com"
             value={email}
@@ -111,7 +108,7 @@ export function AuthPanel({ className, onAuthenticated }: AuthPanelProps) {
           <span className="mb-1 block text-xs font-semibold text-white/50">Нууц үг</span>
           <div className="relative">
             <input
-              className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 pr-10 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.15)] transition-all"
+              className="h-11 w-full rounded-lg border border-white/[0.1] bg-night px-3 pr-10 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(215,181,109,0.14)] transition-all"
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               value={password}

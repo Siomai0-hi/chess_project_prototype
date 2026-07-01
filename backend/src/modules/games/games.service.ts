@@ -1,9 +1,9 @@
 import type { MoveAnalysis } from "@mda-chess/shared";
 import { Color, MoveClassification, type Prisma } from "@prisma/client";
-import { Chess } from "chess.js";
 import { analyzeGame } from "../analysis/analysis.service";
 import { prisma } from "../../services/prisma";
 import { HttpError } from "../../utils/http";
+import { loadPgnOrThrow } from "../../utils/chess";
 
 export async function listGames(userId: string) {
   return prisma.game.findMany({
@@ -48,8 +48,7 @@ export async function createGame(input: {
   depth: number;
   saveAnalysis: boolean;
 }) {
-  const chess = new Chess();
-  chess.loadPgn(input.pgn.trim());
+  const chess = loadPgnOrThrow(input.pgn);
   const result = chess.header().Result;
   const analyzed = input.saveAnalysis ? await analyzeGame({ pgn: input.pgn, depth: input.depth }) : undefined;
 

@@ -11,9 +11,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   primary:
-    "bg-gradient-accent text-night font-semibold hover:bg-gradient-accent-hover shadow-glow-sm hover:shadow-glow-accent active:scale-[0.97]",
+    "border border-accent/35 bg-gradient-accent text-night font-semibold shadow-glow-sm hover:bg-gradient-accent-hover hover:shadow-glow-accent active:scale-[0.97]",
   secondary:
-    "bg-white/[0.07] text-ink hover:bg-white/[0.12] border border-white/[0.1] hover:border-white/20 active:scale-[0.97]",
+    "border border-white/[0.11] bg-white/[0.055] text-ink hover:border-accent/35 hover:bg-white/[0.10] active:scale-[0.97]",
   ghost:
     "text-ink/70 hover:bg-white/[0.07] hover:text-ink active:scale-[0.97]",
   danger:
@@ -23,7 +23,7 @@ const variants = {
 const sizes = {
   sm: "h-8 text-xs rounded-md",
   md: "h-10 text-sm rounded-lg",
-  lg: "h-11 text-sm rounded-xl"
+  lg: "h-11 text-sm rounded-lg"
 };
 
 export function Button({

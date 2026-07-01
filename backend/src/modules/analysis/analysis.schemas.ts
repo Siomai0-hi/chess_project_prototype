@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const analyzeGameSchema = z.object({
-  pgn: z.string().min(1),
-  depth: z.number().int().min(1).max(20).default(10)
+  pgn: z.string().trim().min(1).max(100_000),
+  depth: z.coerce.number().int().min(1).max(20).default(10)
 });
 
 export const analyzeMoveSchema = z.object({
-  fen: z.string().min(1),
-  move: z.string().min(2),
-  depth: z.number().int().min(1).max(20).default(10)
+  fen: z.string().trim().min(1).max(512),
+  move: z.string().trim().min(2).max(16),
+  depth: z.coerce.number().int().min(1).max(20).default(10)
 });

@@ -1,14 +1,14 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import type { SupportedLanguage } from "@mda-chess/shared";
+import { z } from "zod";
 import { env } from "../config/env";
 import { HttpError } from "../utils/http";
 
-interface JwtPayload {
-  sub: string;
-  email: string;
-  preferredLanguage: SupportedLanguage;
-}
+const JwtPayloadSchema = z.object({
+  sub: z.string().min(1),
+  email: z.string().email(),
+  preferredLanguage: z.enum(["mn", "en"])
+});
 
 export function requireAuth(req: Request, _res: Response, next: NextFunction) {
   const token = readBearerToken(req);
@@ -18,12 +18,7 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction) {
   }
 
   try {
-    const payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-    req.user = {
-      id: payload.sub,
-      email: payload.email,
-      preferredLanguage: payload.preferredLanguage
-    };
+    req.user = verifyToken(token);
     next();
   } catch {
     next(new HttpError(401, "Invalid or expired token", "INVALID_TOKEN"));
@@ -38,12 +33,7 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
   }
 
   try {
-    const payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-    req.user = {
-      id: payload.sub,
-      email: payload.email,
-      preferredLanguage: payload.preferredLanguage
-    };
+    req.user = verifyToken(token);
   } catch {
     req.user = undefined;
   }
@@ -51,8 +41,19 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
   next();
 }
 
+function verifyToken(token: string) {
+  const payload = JwtPayloadSchema.parse(jwt.verify(token, env.JWT_SECRET));
+
+  return {
+    id: payload.sub,
+    email: payload.email,
+    preferredLanguage: payload.preferredLanguage
+  };
+}
+
 function readBearerToken(req: Request) {
   const header = req.header("authorization");
-  if (!header?.startsWith("Bearer ")) return undefined;
-  return header.slice("Bearer ".length);
+  const [scheme, token] = header?.trim().split(/\s+/, 2) ?? [];
+  if (scheme?.toLowerCase() !== "bearer" || !token) return undefined;
+  return token;
 }

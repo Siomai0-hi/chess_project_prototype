@@ -9,39 +9,42 @@ export default {
       },
       colors: {
         board: {
-          light: "#f0d9b5",
-          dark: "#b58863"
+          light: "#d9c89c",
+          dark: "#54736f"
         },
-        ink: "#ffffff",
-        night: "#141614",
-        panel: "#1e211e",
-        line: "#2e322e",
-        accent: "#5b8a32",
-        "accent-light": "#72b040",
-        "accent-dim": "#3d5e22",
-        danger: "#c0392b",
-        "danger-light": "#e05046",
-        warning: "#d4a017",
-        "warning-light": "#f0c040",
-        muted: "#8a9a8a",
-        success: "#4caf7d"
+        ink: "#f7f3ea",
+        night: "#12110f",
+        panel: "#1d1a16",
+        line: "#3a342b",
+        accent: "#d7b56d",
+        "accent-light": "#f2d98d",
+        "accent-dim": "#8a6930",
+        danger: "#b84653",
+        "danger-light": "#ff7d86",
+        warning: "#c88937",
+        "warning-light": "#f0bc68",
+        muted: "#9f9a8f",
+        success: "#5fb38e",
+        teal: "#65c8bd",
+        "teal-dim": "#2c5f5a",
+        burgundy: "#7d3142"
       },
       backgroundImage: {
-        "gradient-night": "linear-gradient(135deg, #141614 0%, #1a1e1a 100%)",
-        "gradient-panel": "linear-gradient(135deg, #1e211e 0%, #242824 100%)",
-        "gradient-accent": "linear-gradient(135deg, #5b8a32 0%, #72b040 100%)",
-        "gradient-accent-hover": "linear-gradient(135deg, #6a9e3a 0%, #82c84a 100%)",
-        "gradient-danger": "linear-gradient(135deg, #c0392b 0%, #e05046 100%)",
-        "gradient-radial-glow": "radial-gradient(ellipse at center, rgba(91,138,50,0.12) 0%, transparent 70%)"
+        "gradient-night": "linear-gradient(135deg, #12110f 0%, #1b1715 48%, #12110f 100%)",
+        "gradient-panel": "linear-gradient(145deg, rgba(33,29,23,0.98) 0%, rgba(22,21,19,0.98) 100%)",
+        "gradient-accent": "linear-gradient(135deg, #d7b56d 0%, #65c8bd 100%)",
+        "gradient-accent-hover": "linear-gradient(135deg, #f2d98d 0%, #7fded4 100%)",
+        "gradient-danger": "linear-gradient(135deg, #7d3142 0%, #b84653 100%)",
+        "gradient-radial-glow": "linear-gradient(90deg, rgba(215,181,109,0.10), rgba(101,200,189,0.08))"
       },
       boxShadow: {
-        glow: "0 0 30px rgba(91, 138, 50, 0.25), 0 10px 30px rgba(0,0,0,0.4)",
-        "glow-sm": "0 0 12px rgba(91, 138, 50, 0.2)",
-        "glow-accent": "0 0 20px rgba(91, 138, 50, 0.35)",
-        "glow-danger": "0 0 20px rgba(192, 57, 43, 0.35)",
-        panel: "0 8px 32px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04)",
-        card: "0 4px 16px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.03)",
-        inner: "inset 0 1px 0 rgba(255,255,255,0.06)"
+        glow: "0 0 30px rgba(215, 181, 109, 0.18), 0 14px 42px rgba(0,0,0,0.45)",
+        "glow-sm": "0 0 14px rgba(215, 181, 109, 0.16)",
+        "glow-accent": "0 0 22px rgba(101, 200, 189, 0.22)",
+        "glow-danger": "0 0 20px rgba(184, 70, 83, 0.32)",
+        panel: "0 16px 48px rgba(0,0,0,0.36), 0 1px 0 rgba(255,255,255,0.05)",
+        card: "0 8px 24px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.04)",
+        inner: "inset 0 1px 0 rgba(255,255,255,0.08)"
       },
       keyframes: {
         "fade-up": {
@@ -61,16 +64,16 @@ export default {
           "100%": { opacity: "1", transform: "scale(1)" }
         },
         "glow-pulse": {
-          "0%, 100%": { boxShadow: "0 0 12px rgba(91,138,50,0.2)" },
-          "50%": { boxShadow: "0 0 24px rgba(91,138,50,0.45)" }
+          "0%, 100%": { boxShadow: "0 0 10px rgba(215,181,109,0.18)" },
+          "50%": { boxShadow: "0 0 22px rgba(101,200,189,0.32)" }
         },
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" }
         },
         "border-glow": {
-          "0%, 100%": { borderColor: "rgba(91,138,50,0.3)" },
-          "50%": { borderColor: "rgba(91,138,50,0.7)" }
+          "0%, 100%": { borderColor: "rgba(215,181,109,0.32)" },
+          "50%": { borderColor: "rgba(101,200,189,0.7)" }
         }
       },
       animation: {

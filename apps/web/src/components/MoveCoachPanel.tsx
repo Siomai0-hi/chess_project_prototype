@@ -1,5 +1,5 @@
 import type { CoachExplanation, MoveAnalysis } from "@mda-chess/shared";
-import { ArrowRight, Lightbulb, Loader2, Search, Sparkles } from "lucide-react";
+import { ArrowRight, BrainCircuit, Gauge, Lightbulb, Loader2, Radar, Route, Search, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/Button";
 
@@ -17,11 +17,12 @@ export function MoveCoachPanel({ move, explanation, loading, analyzing, onAnalyz
   const [showLong, setShowLong] = useState(false);
 
   return (
-    <section className="flex min-h-[24rem] flex-col rounded-xl border border-white/[0.07] bg-panel shadow-panel">
-      {/* Header */}
-      <div className="flex h-12 items-center justify-between gap-3 border-b border-white/[0.07] px-3">
-        <div className="min-w-0">
-          <h2 className="text-sm font-bold text-white">Шинжилгээ</h2>
+    <section className="flex min-h-[24rem] flex-col rounded-lg border border-white/[0.08] bg-[#171411]/88 shadow-panel">
+      <div className="flex h-12 items-center justify-between gap-3 border-b border-white/[0.08] px-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <BrainCircuit size={15} className="shrink-0 text-teal" aria-hidden="true" />
+          <div className="min-w-0">
+            <h2 className="truncate text-sm font-black text-ink">Coach самбар</h2>
           {move ? (
             <p className="truncate text-[11px] text-white/35">
               {move.moveNumber}. {move.san}
@@ -32,9 +33,10 @@ export function MoveCoachPanel({ move, explanation, loading, analyzing, onAnalyz
           ) : (
             <p className="text-[11px] text-white/35">Нүүдэл сонгоно уу</p>
           )}
+          </div>
         </div>
         <Button
-          variant="secondary"
+          variant="primary"
           size="sm"
           icon={analyzing ? <Loader2 className="animate-spin" size={14} /> : <Search size={14} />}
           onClick={onAnalyze}
@@ -46,30 +48,27 @@ export function MoveCoachPanel({ move, explanation, loading, analyzing, onAnalyz
         </Button>
       </div>
 
-      {/* Content */}
       <div className="min-h-0 flex-1 space-y-3 overflow-auto p-3">
 
-        {/* Eval stats */}
         <div className="grid grid-cols-3 gap-2">
-          <InfoCell label="Eval" value={formatScore(evaluation?.scoreCpWhite, evaluation?.mateIn)} />
-          <InfoCell label="Гүн" value={evaluation?.depth ?? "--"} />
+          <InfoCell icon={<Gauge size={12} />} label="Eval" value={formatScore(evaluation?.scoreCpWhite, evaluation?.mateIn)} />
+          <InfoCell icon={<Radar size={12} />} label="Гүн" value={evaluation?.depth ?? "--"} />
           <InfoCell
+            icon={<Route size={12} />}
             label="Алдагдал"
             value={typeof move?.centipawnLoss === "number" ? `${move.centipawnLoss}cp` : "--"}
             danger={(move?.centipawnLoss ?? 0) > 150}
           />
         </div>
 
-        {/* Classification banner */}
         {move ? (
-          <div className={`rounded-lg border px-3 py-2 ${classificationBannerClass(move.classification)}`}>
-            <p className="text-xs font-bold">{classificationLabel(move.classification)}: {move.san}</p>
+          <div className={`rounded-lg border px-3 py-2 shadow-inner ${classificationBannerClass(move.classification)}`}>
+            <p className="text-xs font-black">{classificationSymbol(move.classification)} {classificationLabel(move.classification)}: {move.san}</p>
           </div>
         ) : null}
 
-        {/* Best moves */}
         <section>
-          <h3 className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-white/35">
+          <h3 className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-white/35">
             Шилдэг нүүдлүүд
           </h3>
           {bestMoves.length ? (
@@ -77,37 +76,35 @@ export function MoveCoachPanel({ move, explanation, loading, analyzing, onAnalyz
               {bestMoves.map((line, index) => (
                 <div
                   key={`${line}-${index}`}
-                  className="flex items-center justify-between rounded-lg bg-night px-3 py-2 text-sm"
+                  className="grid grid-cols-[1.4rem_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-white/[0.07] bg-black/20 px-3 py-2 text-sm"
                 >
-                  <span className="grid h-5 w-5 place-items-center rounded-md bg-white/[0.06] text-[11px] font-bold text-white/40">
+                  <span className="grid h-5 w-5 place-items-center rounded-md bg-accent/[0.13] text-[11px] font-black text-accent-light">
                     {index + 1}
                   </span>
-                  <span className="truncate px-2 font-bold text-white">{line}</span>
-                  <span className="text-white/25">
+                  <span className="truncate font-bold text-ink">{line}</span>
+                  <span className="text-teal/70">
                     <ArrowRight size={12} />
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="rounded-lg bg-night px-3 py-2 text-sm text-white/35">
-              Шинжилгээний дараа engine line гарна.
+            <p className="rounded-lg border border-white/[0.07] bg-black/20 px-3 py-2 text-sm font-semibold text-white/35">
+              Engine line хүлээж байна.
             </p>
           )}
         </section>
 
-        {/* Better move chip */}
         {explanation?.betterMove ? (
-          <div className="flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/[0.08] px-3 py-2">
+          <div className="flex items-center gap-2 rounded-lg border border-teal/25 bg-teal/[0.08] px-3 py-2">
             <Sparkles size={13} className="shrink-0 text-accent-light" />
             <span className="text-xs text-white/60">Илүү сайн нүүдэл:</span>
-            <span className="font-bold text-accent-light">{explanation.betterMove}</span>
+            <span className="font-black text-teal">{explanation.betterMove}</span>
           </div>
         ) : null}
 
-        {/* Coach explanation */}
         <section>
-          <h3 className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-white/35">
+          <h3 className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-white/35">
             Тайлбар
           </h3>
           {loading ? <CoachSkeleton /> : null}
@@ -145,10 +142,13 @@ export function MoveCoachPanel({ move, explanation, loading, analyzing, onAnalyz
   );
 }
 
-function InfoCell({ label, value, danger }: { label: string; value: React.ReactNode; danger?: boolean }) {
+function InfoCell({ icon, label, value, danger }: { icon: React.ReactNode; label: string; value: React.ReactNode; danger?: boolean }) {
   return (
-    <div className="rounded-lg border border-white/[0.07] bg-night px-2 py-2">
-      <p className="text-[10px] font-semibold uppercase tracking-wide text-white/35">{label}</p>
+    <div className={`rounded-lg border px-2 py-2 ${danger ? "border-danger/25 bg-danger/[0.08]" : "border-white/[0.08] bg-white/[0.045]"}`}>
+      <p className={`flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide ${danger ? "text-danger-light" : "text-white/35"}`}>
+        <span className={danger ? "text-danger-light" : "text-accent-light"}>{icon}</span>
+        {label}
+      </p>
       <p className={`mt-0.5 truncate text-sm font-bold tabular ${danger ? "text-danger-light" : "text-white"}`}>
         {value}
       </p>
@@ -172,8 +172,8 @@ function CoachBlock({
     <div
       className={`rounded-lg border p-3 ${
         highlight
-          ? "border-warning/20 bg-warning/[0.06]"
-          : "border-white/[0.07] bg-night"
+          ? "border-warning/25 bg-warning/[0.07]"
+          : "border-white/[0.08] bg-black/20"
       }`}
     >
       {title ? (
@@ -182,7 +182,7 @@ function CoachBlock({
           {title}
         </p>
       ) : null}
-      <p className="text-sm leading-[1.65] text-white/70">{value}</p>
+      <p className="text-sm leading-[1.65] text-white/[0.72]">{value}</p>
     </div>
   );
 }
@@ -227,7 +227,7 @@ function classificationColor(classification: MoveAnalysis["classification"]) {
   if (classification === "blunder" || classification === "mistake") return "text-danger-light";
   if (classification === "inaccuracy") return "text-warning-light";
   if (classification === "book") return "text-white/40";
-  return "text-accent-light";
+  return "text-teal";
 }
 
 function classificationBannerClass(classification: MoveAnalysis["classification"]) {
@@ -235,5 +235,5 @@ function classificationBannerClass(classification: MoveAnalysis["classification"
   if (classification === "mistake") return "border-danger/20 bg-danger/[0.07] text-danger-light";
   if (classification === "inaccuracy") return "border-warning/25 bg-warning/[0.08] text-warning-light";
   if (classification === "book") return "border-white/10 bg-white/[0.04] text-white/50";
-  return "border-accent/25 bg-accent/[0.08] text-accent-light";
+  return "border-teal/25 bg-teal/[0.08] text-teal";
 }

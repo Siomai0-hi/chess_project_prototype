@@ -1,19 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import {
+  Activity,
   AlertCircle,
+  BrainCircuit,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
   Clipboard,
+  Clock3,
+  Crosshair,
+  Gauge,
   RefreshCcw,
   RotateCcw,
   Save,
+  ShieldAlert,
+  Swords,
+  Target,
   Upload,
   X
 } from "lucide-react";
+import type { ReactNode } from "react";
 import type { GameSummary, MoveAnalysis } from "@mda-chess/shared";
 import { accuracyFromLosses } from "@mda-chess/shared";
 import { AppShell } from "./components/AppShell";
@@ -64,6 +73,11 @@ export function App() {
   const activeMateIn = selectedMove?.evaluationAfter?.mateIn ?? selectedMove?.evaluationBefore?.mateIn;
   const selectedMoveIndex = moves.findIndex((m) => m.fenAfter === selectedMove?.fenAfter);
   const material = useMemo(() => getMaterialAdvantage(fen), [fen]);
+  const legalMoveCount = currentPosition.moves().length;
+  const phaseLabel = useMemo(() => getGamePhase(fen), [fen]);
+  const evalLabel = formatEval(activeScore, activeMateIn);
+  const initiativeLabel = getInitiativeLabel(activeScore, activeMateIn);
+  const criticalCount = moves.filter((m) => m.classification === "mistake" || m.classification === "blunder").length;
   const turnLabel = currentPosition.turn() === "w" ? "Цагаан нүүнэ" : "Хар нүүнэ";
   const boardStateLabel = currentPosition.isGameOver()
     ? "Дууссан"
@@ -220,11 +234,52 @@ export function App() {
 
   return (
     <AppShell>
-      {/* 3-column layout */}
-      <div className="grid gap-3 xl:grid-cols-[minmax(22rem,34rem)_minmax(17rem,24rem)_minmax(19rem,24rem)]">
+      <section className="mb-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,27rem)]" aria-label="Тоглолтын төлөв">
+        <div className="rounded-lg border border-white/[0.08] bg-gradient-panel p-3 shadow-panel">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-accent/30 bg-accent/[0.11] text-accent-light">
+                <BrainCircuit size={19} aria-hidden="true" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/[0.38]">Байрлалын команд</p>
+                <h1 className="truncate text-xl font-black tracking-tight text-ink sm:text-2xl">{boardStateLabel}</h1>
+              </div>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-md border border-teal/25 bg-teal/[0.08] px-3 py-1.5 text-sm font-bold text-teal">
+              <Activity size={15} aria-hidden="true" />
+              {initiativeLabel}
+            </div>
+          </div>
 
-        {/* Column 1: Board */}
-        <section className="grid min-w-0 content-start gap-2">
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <DeskMetric icon={<Gauge size={15} />} label="Eval" value={evalLabel} />
+            <DeskMetric icon={<Clock3 size={15} />} label="Үе" value={phaseLabel} />
+            <DeskMetric icon={<Target size={15} />} label="Нүүдэл" value={legalMoveCount} />
+            <DeskMetric icon={<ShieldAlert size={15} />} label="Critical" value={criticalCount} danger={criticalCount > 0} />
+          </div>
+        </div>
+
+        <div className="grid rounded-lg border border-white/[0.08] bg-[#171411]/80 p-3 shadow-panel">
+          <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-white/35">Одоогийн тэмдэглэл</p>
+          <div className="mt-2 flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="truncate text-lg font-black text-ink">
+                {selectedMove ? `${selectedMove.moveNumber}. ${selectedMove.san}` : turnLabel}
+              </p>
+              <p className="mt-1 truncate text-xs text-white/[0.42]">
+                {selectedMove ? classificationLabel(selectedMove.classification) : `${legalMoveCount} боломжит нүүдэл`}
+              </p>
+            </div>
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg border border-accent/25 bg-accent/[0.09] text-2xl text-accent-light">
+              {currentPosition.turn() === "w" ? "♔" : "♚"}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="grid items-start gap-3 xl:grid-cols-[minmax(22rem,35rem)_minmax(17rem,24rem)_minmax(20rem,25rem)]">
+        <section className="grid min-w-0 content-start gap-2 rounded-lg border border-white/[0.08] bg-[#181511]/74 p-2 shadow-panel">
           <PlayerBar
             side="black"
             name="Хар"
@@ -247,18 +302,15 @@ export function App() {
             materialAdvantage={material.white}
           />
 
-          {/* Board state bar */}
-          <div className="flex min-h-10 items-center justify-between gap-3 rounded-xl border border-white/[0.07] bg-panel px-3 text-sm">
-            <span className="font-semibold text-white">{boardStateLabel}</span>
-            <span className="truncate text-white/35">
-              {selectedMove
-                ? `${selectedMove.moveNumber}. ${selectedMove.san}`
-                : `${currentPosition.moves().length} боломжит нүүдэл • ← → товч`}
+          <div className="grid min-h-10 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-lg border border-white/[0.08] bg-black/20 px-3 text-sm">
+            <Swords size={15} className="text-accent-light" aria-hidden="true" />
+            <span className="truncate font-semibold text-ink">{boardStateLabel}</span>
+            <span className="truncate text-xs font-semibold text-white/[0.38]">
+              {selectedMove ? `${selectedMove.color === "white" ? "Цагаан" : "Хар"} • ${selectedMove.centipawnLoss}cp` : `${legalMoveCount} нүүдэл`}
             </span>
           </div>
         </section>
 
-        {/* Column 2: Game review */}
         <GameReviewPanel
           moves={moves}
           selectedMove={selectedMove}
@@ -266,7 +318,6 @@ export function App() {
           loading={analyzeGameMutation.isPending}
         />
 
-        {/* Column 3: Coach panel + Progress */}
         <div className="flex flex-col gap-3">
           <MoveCoachPanel
             move={selectedMove}
@@ -284,9 +335,8 @@ export function App() {
         </div>
       </div>
 
-      {/* Toolbar */}
       <section
-        className="mt-3 flex flex-wrap items-center gap-2 rounded-xl border border-white/[0.07] bg-panel p-2 shadow-panel"
+        className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-white/[0.08] bg-[#171411]/88 p-2 shadow-panel"
         aria-label="Самбарын удирдлага"
       >
         <Button variant="secondary" size="sm" icon={<ChevronsLeft size={15} />} onClick={goToStart} title="Эхэнд" aria-label="Эхэнд" />
@@ -315,12 +365,12 @@ export function App() {
           title="Хадгалах"
           aria-label="Хадгалах"
         />
-        <div className="ml-auto truncate px-2 text-xs text-white/30">
-          {summary ? `${summary.totalMoves} нүүдэл шинжилсэн` : "Бэлэн • ← → товч"}
+        <div className="ml-auto flex min-w-0 items-center gap-2 truncate px-2 text-xs font-semibold text-white/[0.34]">
+          <Crosshair size={13} className="shrink-0 text-teal" aria-hidden="true" />
+          <span className="truncate">{summary ? `${summary.totalMoves} нүүдэл шинжилсэн` : "Бэлэн"}</span>
         </div>
       </section>
 
-      {/* Game summary bar */}
       {summary ? <GameSummaryBar summary={summary} className="mt-3" /> : null}
 
       {/* PGN modal */}
@@ -339,6 +389,34 @@ export function App() {
   );
 }
 
+function DeskMetric({
+  icon,
+  label,
+  value,
+  danger
+}: {
+  icon: ReactNode;
+  label: string;
+  value: ReactNode;
+  danger?: boolean;
+}) {
+  return (
+    <div
+      className={`min-w-0 rounded-lg border px-3 py-2 ${
+        danger
+          ? "border-danger/25 bg-danger/[0.08]"
+          : "border-white/[0.08] bg-white/[0.045]"
+      }`}
+    >
+      <div className={`mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] ${danger ? "text-danger-light" : "text-white/[0.38]"}`}>
+        <span className={danger ? "text-danger-light" : "text-accent-light"}>{icon}</span>
+        {label}
+      </div>
+      <p className={`truncate text-sm font-black tabular ${danger ? "text-danger-light" : "text-ink"}`}>{value}</p>
+    </div>
+  );
+}
+
 // ─── PGN Modal ────────────────────────────────────────────────────────────────
 
 function PgnModal({
@@ -354,11 +432,11 @@ function PgnModal({
 }) {
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-3 backdrop-blur-sm">
-      <section className="w-full max-w-2xl animate-fade-up rounded-xl border border-white/[0.07] bg-panel shadow-panel">
-        <div className="flex h-12 items-center justify-between border-b border-white/[0.07] px-4">
-          <h2 className="text-sm font-bold text-white">PGN оруулах</h2>
+      <section className="w-full max-w-2xl animate-fade-up rounded-lg border border-white/[0.08] bg-[#171411] shadow-panel">
+        <div className="flex h-12 items-center justify-between border-b border-white/[0.08] px-4">
+          <h2 className="text-sm font-black text-ink">PGN оруулах</h2>
           <button
-            className="grid h-7 w-7 place-items-center rounded-lg text-white/40 transition hover:bg-white/[0.08] hover:text-white"
+            className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition hover:bg-white/[0.08] hover:text-white"
             onClick={onClose}
             aria-label="Хаах"
           >
@@ -367,7 +445,7 @@ function PgnModal({
         </div>
         <div className="p-4">
           <textarea
-            className="min-h-56 w-full rounded-lg border border-white/[0.1] bg-night p-3 font-mono text-sm leading-6 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(91,138,50,0.12)] transition-all"
+            className="min-h-56 w-full rounded-lg border border-white/[0.1] bg-night p-3 font-mono text-sm leading-6 text-white outline-none placeholder:text-white/25 focus:border-accent focus:shadow-[0_0_0_3px_rgba(215,181,109,0.14)] transition-all"
             placeholder="1. e4 e5 2. Nf3 Nc6..."
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -397,11 +475,11 @@ function ToastViewport({
       {toasts.map((toast) => (
         <button
           key={toast.id}
-          className="flex animate-fade-up items-start gap-2.5 rounded-xl border border-white/[0.1] bg-panel/95 p-3 text-left shadow-panel backdrop-blur-sm"
+          className="flex animate-fade-up items-start gap-2.5 rounded-lg border border-white/[0.1] bg-[#171411]/95 p-3 text-left shadow-panel backdrop-blur-sm"
           onClick={() => onDismiss(toast.id)}
         >
           {toast.tone === "success" ? (
-            <CheckCircle2 className="mt-0.5 shrink-0 text-accent-light" size={16} aria-hidden="true" />
+            <CheckCircle2 className="mt-0.5 shrink-0 text-teal" size={16} aria-hidden="true" />
           ) : (
             <AlertCircle className="mt-0.5 shrink-0 text-danger-light" size={16} aria-hidden="true" />
           )}
@@ -432,6 +510,53 @@ function getMaterialAdvantage(fen: string) {
     }
   }
   return { white: Math.max(0, white - black), black: Math.max(0, black - white) };
+}
+
+function getGamePhase(fen: string) {
+  const values: Record<string, number> = { n: 3, b: 3, r: 5, q: 9 };
+  const chess = safeChess(fen);
+  let phaseMaterial = 0;
+  let queens = 0;
+  for (const row of chess.board()) {
+    for (const piece of row) {
+      if (!piece || piece.type === "p" || piece.type === "k") continue;
+      phaseMaterial += values[piece.type] ?? 0;
+      if (piece.type === "q") queens += 1;
+    }
+  }
+  if (phaseMaterial > 46) return "Эхлэл";
+  if (queens === 0 && phaseMaterial <= 24) return "Төгсгөл";
+  if (phaseMaterial <= 32) return "Шилжилт";
+  return "Дунд үе";
+}
+
+function formatEval(scoreCpWhite?: number, mateIn?: number) {
+  if (typeof mateIn === "number") return `#${Math.abs(mateIn)}`;
+  if (typeof scoreCpWhite !== "number") return "0.00";
+  return `${scoreCpWhite > 0 ? "+" : ""}${(scoreCpWhite / 100).toFixed(2)}`;
+}
+
+function getInitiativeLabel(scoreCpWhite?: number, mateIn?: number) {
+  if (typeof mateIn === "number") return mateIn > 0 ? "Цагаан матын довтолгоо" : "Хар матын довтолгоо";
+  if (typeof scoreCpWhite !== "number" || Math.abs(scoreCpWhite) < 35) return "Тэнцвэр";
+  if (scoreCpWhite >= 180) return "Цагаан давамгай";
+  if (scoreCpWhite >= 80) return "Цагаан шахалттай";
+  if (scoreCpWhite <= -180) return "Хар давамгай";
+  if (scoreCpWhite <= -80) return "Хар шахалттай";
+  return scoreCpWhite > 0 ? "Цагаан бага зэрэг" : "Хар бага зэрэг";
+}
+
+function classificationLabel(classification: MoveAnalysis["classification"]) {
+  const labels: Record<MoveAnalysis["classification"], string> = {
+    book: "Номын нүүдэл",
+    best: "Шилдэг нүүдэл",
+    excellent: "Маш сайн",
+    good: "Сайн",
+    inaccuracy: "Оновчгүй",
+    mistake: "Алдаа",
+    blunder: "Ноцтой алдаа"
+  };
+  return labels[classification];
 }
 
 function summarizeLiveGame(moves: MoveAnalysis[]): GameSummary {

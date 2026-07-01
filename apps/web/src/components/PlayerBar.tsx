@@ -1,4 +1,5 @@
 import { cn } from "@mda-chess/ui";
+import { Clock3 } from "lucide-react";
 
 interface PlayerBarProps {
   side: "white" | "black";
@@ -33,57 +34,54 @@ export function PlayerBar({ side, name, rating, clock, isActive, materialAdvanta
   return (
     <div
       className={cn(
-        "flex h-11 items-center justify-between gap-3 rounded-xl border px-3 text-sm transition-all duration-300",
+        "flex h-11 items-center justify-between gap-3 rounded-lg border px-3 text-sm transition-all duration-300",
         isActive
-          ? "border-accent/50 bg-accent/[0.07] shadow-[0_0_0_1px_rgba(91,138,50,0.2),0_0_12px_rgba(91,138,50,0.1)]"
-          : "border-white/[0.07] bg-panel"
+          ? "border-accent/45 bg-[linear-gradient(90deg,rgba(215,181,109,0.14),rgba(101,200,189,0.07))] shadow-[0_0_0_1px_rgba(215,181,109,0.12),0_12px_26px_rgba(0,0,0,0.22)]"
+          : "border-white/[0.08] bg-[#171411]/82"
       )}
     >
       <div className="flex min-w-0 items-center gap-2.5">
         {/* Avatar */}
         <div
           className={cn(
-            "relative grid h-7 w-7 shrink-0 place-items-center rounded-lg text-xs font-bold transition-all duration-300",
+            "relative grid h-7 w-7 shrink-0 place-items-center rounded-md text-xs font-black transition-all duration-300",
             side === "white"
-              ? "bg-white text-night"
-              : "border border-white/20 bg-[#111] text-white",
-            isActive && "ring-2 ring-accent/60 ring-offset-1 ring-offset-night"
+              ? "bg-ink text-night"
+              : "border border-white/20 bg-[#0d0c0b] text-ink",
+            isActive && "ring-2 ring-teal/60 ring-offset-1 ring-offset-night"
           )}
         >
           {initials}
-          {/* Active pulse dot */}
           {isActive ? (
-            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-accent shadow-[0_0_6px_rgba(91,138,50,0.8)] animate-glow-pulse" />
+            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-teal shadow-[0_0_8px_rgba(101,200,189,0.75)] animate-glow-pulse" />
           ) : null}
         </div>
 
-        {/* Name & material */}
         <div className="min-w-0">
           <div className="flex min-w-0 items-center gap-2">
-            <span className="truncate font-semibold text-white">{name}</span>
+            <span className="truncate font-semibold text-ink">{name}</span>
             {rating ? (
               <span className="shrink-0 text-[11px] font-medium text-white/35">{rating}</span>
             ) : null}
           </div>
           {piecesLabel ? (
-            <p className="text-[11px] leading-none text-white/45" aria-label={`+${materialAdvantage} material`}>
-              {piecesLabel} <span className="text-white/30">+{materialAdvantage}</span>
+            <p className="text-[11px] leading-none text-accent-light/75" aria-label={`+${materialAdvantage} material`}>
+              {piecesLabel} <span className="text-white/35">+{materialAdvantage}</span>
             </p>
           ) : null}
         </div>
       </div>
 
-      {/* Clock — only shown when a clock prop is provided */}
       {clock != null ? (
         <div
           className={cn(
-            "flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold tabular transition-all duration-300",
+            "flex shrink-0 items-center gap-1 rounded-md px-2.5 py-1 text-xs font-bold tabular transition-all duration-300",
             isActive
-              ? "bg-accent/20 text-accent-light"
+              ? "bg-teal/[0.14] text-teal"
               : "bg-black/20 text-white/50"
           )}
         >
-          <span className="text-[10px] opacity-60">⏱</span>
+          <Clock3 size={12} className="opacity-70" aria-hidden="true" />
           {clock}
         </div>
       ) : null}

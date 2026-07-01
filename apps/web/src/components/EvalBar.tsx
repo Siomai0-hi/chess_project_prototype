@@ -27,7 +27,7 @@ export function EvalBar({ scoreCpWhite, mateIn, className }: EvalBarProps) {
   return (
     <div
       className={cn(
-        "relative flex h-full min-h-[18rem] w-7 flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-[#0e100e] shadow-inner",
+        "relative flex h-full min-h-[18rem] w-7 flex-col overflow-hidden rounded-lg border border-white/[0.09] bg-[#0d0c0b] shadow-inner",
         className
       )}
       title={`Үнэлгээ: ${label}`}
@@ -45,12 +45,12 @@ export function EvalBar({ scoreCpWhite, mateIn, className }: EvalBarProps) {
           style={{
             height: `${whitePercent}%`,
             background: isMateForWhite
-              ? "linear-gradient(180deg, #a8e063 0%, #ffffff 100%)"
+              ? "linear-gradient(180deg, #65c8bd 0%, #f7f3ea 100%)"
               : isMateForBlack
-              ? "linear-gradient(180deg, #888 0%, #ddd 100%)"
+              ? "linear-gradient(180deg, #413a31 0%, #9f9a8f 100%)"
               : isWhiteAdvantage
-              ? "linear-gradient(180deg, #c8d8c0 0%, #f0f4ee 100%)"
-              : "linear-gradient(180deg, #b0bab0 0%, #e8ece8 100%)"
+              ? "linear-gradient(180deg, #d7b56d 0%, #f7f3ea 100%)"
+              : "linear-gradient(180deg, #54736f 0%, #d9c89c 100%)"
           }}
         />
 
@@ -59,9 +59,9 @@ export function EvalBar({ scoreCpWhite, mateIn, className }: EvalBarProps) {
           className={cn(
             "absolute left-1/2 -translate-x-1/2 rounded-md px-1 py-0.5 text-[9px] font-black tabular leading-tight tracking-tight transition-all duration-500",
             isMate
-              ? "top-2 bg-black/60 text-yellow-300"
+              ? "top-2 bg-black/60 text-accent-light"
               : isWhiteAdvantage
-              ? "bottom-2 bg-black/50 text-white"
+              ? "bottom-2 bg-black/55 text-ink"
               : "top-2 bg-white/15 text-white/90"
           )}
         >
@@ -70,7 +70,7 @@ export function EvalBar({ scoreCpWhite, mateIn, className }: EvalBarProps) {
       </div>
 
       {/* Footer label */}
-      <div className="grid h-6 place-items-center bg-[#0e100e] text-[9px] font-bold uppercase tracking-widest text-white/30">
+      <div className="grid h-6 place-items-center bg-[#0d0c0b] text-[9px] font-bold uppercase tracking-widest text-white/30">
         eval
       </div>
     </div>

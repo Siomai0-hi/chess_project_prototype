@@ -8,10 +8,10 @@ interface AccuracyBadgeProps {
 }
 
 function getAccuracyColor(accuracy: number) {
-  if (accuracy >= 90) return { bg: "bg-success/15", text: "text-success", border: "border-success/25", glow: "shadow-[0_0_10px_rgba(76,175,125,0.2)]" };
-  if (accuracy >= 80) return { bg: "bg-accent/15", text: "text-accent-light", border: "border-accent/25", glow: "shadow-[0_0_10px_rgba(91,138,50,0.2)]" };
-  if (accuracy >= 65) return { bg: "bg-warning/12", text: "text-warning-light", border: "border-warning/25", glow: "shadow-[0_0_10px_rgba(212,160,23,0.2)]" };
-  return { bg: "bg-danger/12", text: "text-danger-light", border: "border-danger/25", glow: "shadow-[0_0_10px_rgba(192,57,43,0.2)]" };
+  if (accuracy >= 90) return { bg: "bg-success/[0.14]", text: "text-success", border: "border-success/25", glow: "shadow-[0_0_10px_rgba(95,179,142,0.2)]" };
+  if (accuracy >= 80) return { bg: "bg-teal/[0.14]", text: "text-teal", border: "border-teal/25", glow: "shadow-[0_0_10px_rgba(101,200,189,0.18)]" };
+  if (accuracy >= 65) return { bg: "bg-warning/[0.14]", text: "text-warning-light", border: "border-warning/25", glow: "shadow-[0_0_10px_rgba(200,137,55,0.2)]" };
+  return { bg: "bg-danger/[0.14]", text: "text-danger-light", border: "border-danger/25", glow: "shadow-[0_0_10px_rgba(184,70,83,0.2)]" };
 }
 
 function getAccuracyLabel(accuracy: number) {

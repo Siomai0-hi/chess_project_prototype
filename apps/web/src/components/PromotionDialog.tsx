@@ -25,12 +25,12 @@ export function PromotionDialog({ open, color, onSelect, onClose }: PromotionDia
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 12 }}
             transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-            className="glass w-full max-w-sm rounded-2xl shadow-panel"
+            className="glass w-full max-w-sm rounded-lg shadow-panel"
           >
-            <div className="flex h-12 items-center justify-between border-b border-white/[0.07] px-4">
-              <h2 className="text-sm font-bold text-white">Бодыг солих</h2>
+            <div className="flex h-12 items-center justify-between border-b border-white/[0.08] px-4">
+              <h2 className="text-sm font-black text-ink">Бодыг солих</h2>
               <button
-                className="grid h-7 w-7 place-items-center rounded-lg text-white/50 transition hover:bg-white/10 hover:text-white"
+                className="grid h-7 w-7 place-items-center rounded-md text-white/50 transition hover:bg-white/10 hover:text-white"
                 onClick={onClose}
                 aria-label="Хаах"
               >
@@ -42,14 +42,14 @@ export function PromotionDialog({ open, color, onSelect, onClose }: PromotionDia
               {pieces.map((piece) => (
                 <button
                   key={piece.value}
-                  className="group flex flex-col items-center gap-1.5 rounded-xl border border-white/[0.07] bg-white/[0.04] p-3 transition-all duration-150 hover:border-accent/50 hover:bg-accent/10 hover:shadow-glow-sm active:scale-95"
+                  className="group flex flex-col items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.045] p-3 transition-all duration-150 hover:border-teal/45 hover:bg-teal/[0.08] hover:shadow-glow-sm active:scale-95"
                   onClick={() => onSelect(piece.value)}
                   title={piece.label}
                 >
                   <span className="text-3xl leading-none transition-transform group-hover:scale-110">
                     {piece.symbol[color]}
                   </span>
-                  <span className="text-[10px] font-semibold text-white/45 group-hover:text-accent-light">
+                  <span className="text-[10px] font-semibold text-white/45 group-hover:text-teal">
                     {piece.label}
                   </span>
                 </button>
