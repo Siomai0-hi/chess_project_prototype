@@ -82,7 +82,7 @@ export function App() {
   const boardStateLabel = currentPosition.isGameOver()
     ? "Дууссан"
     : currentPosition.isCheck()
-    ? "Шах"
+    ? "Шаг"
     : turnLabel;
 
   // Error notifications
