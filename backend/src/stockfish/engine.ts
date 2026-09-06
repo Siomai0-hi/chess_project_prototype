@@ -1,5 +1,5 @@
 import { HeuristicEngineAdapter, type ChessEngineAdapter } from "@mda-chess/chess-engine";
-import 
+import { Stockfish, type maxengine } from "@mda-chess/chess-engine";
 let engine: ChessEngineAdapter | undefined;
 
 export function createServerEngine() {
