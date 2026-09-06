@@ -537,24 +537,24 @@ function formatEval(scoreCpWhite?: number, mateIn?: number) {
 }
 
 function getInitiativeLabel(scoreCpWhite?: number, mateIn?: number) {
-  if (typeof mateIn === "number") return mateIn > 0 ? "Цагаан матын довтолгоо" : "Хар матын довтолгоо";
+  if (typeof mateIn === "number") return mateIn > 0 ? "Шаг мад" : "Шаг мад";
   if (typeof scoreCpWhite !== "number" || Math.abs(scoreCpWhite) < 35) return "Тэнцвэр";
-  if (scoreCpWhite >= 180) return "Цагаан давамгай";
-  if (scoreCpWhite >= 80) return "Цагаан шахалттай";
+  if (scoreCpWhite >= 180) return "Цагаан давуу байрлал";
+  if (scoreCpWhite >= 80) return "Цагаан байрлал тааруу";
   if (scoreCpWhite <= -180) return "Хар давамгай";
-  if (scoreCpWhite <= -80) return "Хар шахалттай";
+  if (scoreCpWhite <= -80) return "Хар муу байрлал";
   return scoreCpWhite > 0 ? "Цагаан бага зэрэг" : "Хар бага зэрэг";
 }
 
 function classificationLabel(classification: MoveAnalysis["classification"]) {
   const labels: Record<MoveAnalysis["classification"], string> = {
-    book: "Номын нүүдэл",
-    best: "Шилдэг нүүдэл",
-    excellent: "Маш сайн",
-    good: "Сайн",
-    inaccuracy: "Оновчгүй",
+    book: "Гарааны нүүдэл",
+    best: "Хамгийн оновчтой нүүдэл",
+    excellent: "Сайн нүүдэл",
+    good: "Дажгүй нүүдэл",
+    inaccuracy: "Шаардлагагүй илүүц нүүдэл",
     mistake: "Алдаа",
-    blunder: "Ноцтой алдаа"
+    blunder: "Маш муу нүүдэл"
   };
   return labels[classification];
 }
@@ -570,6 +570,6 @@ function summarizeLiveGame(moves: MoveAnalysis[]): GameSummary {
     accuracyBlack: accuracyFromLosses(blackLosses),
     totalMoves: moves.length,
     criticalMistakes,
-    review: "Шууд тоглолтын шинжилгээ шинэчлэгдлээ. Сонгосон нүүдлийн тайлбарыг баруун самбараас харна."
+    review: "Өргийн анализийн тайлбарыг баруун самбараас харна."
   };
 }
